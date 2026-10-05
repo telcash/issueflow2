@@ -23,6 +23,7 @@ final class HomeController {
     #[Route('/', name: 'app_home', methods: ['GET'])]
     public function index(): Response {
         $projectName = 'IssueFlow';
+        $message = 'Symfony ha recibido la petición y ha devuelto un Response';
 
         // Creamos una variable que contiene el documento html
         $html = <<<HTML
@@ -34,7 +35,12 @@ final class HomeController {
                 <title>{$projectName}</title>
             </head>
             <body>
-                <h1>{$projectName}</h1>
+                <main>
+                    <h1>{$projectName}</h1>
+                    <p>{$message}</p>
+                    <p><a href="/tickets">Ver incidencias</a></p>
+                    <p><a href="/health">Comprobar estado</a></p>
+                </main>
             </body>
             </html>
         HTML;
@@ -42,4 +48,32 @@ final class HomeController {
         // Retornamos la respuesta
         return new Response($html, Response::HTTP_OK);
     }
+
+    /* Definimos una segunda ruta para este controlador.
+    La ruta será la de /health: '/health' -> 1er argumento
+    Tendrá un nombre interno: 'app_health' -> 2do argumento
+    Sólo para métodos GET -> 3er argumento 
+    Luego de la ruta, definimos el método correspondiente a ella,
+    el cual genera la respuesta para el cliente, que será
+    un objeto de la clase Response
+    */
+    #[Route('/health', name: 'app_health', methods: ['GET'])]
+    public function health(): Response {
+        // Especifico que el contenido es text/plain y no un documento html
+        return new Response('IssueFlow OK', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+    }
+
+    /* Estructura de una ruta con su método correspondiente:
+
+    #[Route('/ruta', name: 'app_ruta', methods: ['GET'])]
+    public function ruta(): Response {
+        Aquí la lógica de la ruta
+        ...
+        ...
+        ...
+        
+        return new Response('Contenido', 200);
+    }
+
+    */
 }
