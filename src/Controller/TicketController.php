@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 // Mi clase TicketController hereda de AbstractController de Symfony
@@ -73,7 +74,8 @@ final class TicketController extends AbstractController
     // Ruta dinámica para mostrar un ticket específico por su ID.
     #[Route('/tickets/{id}', name:"app_ticket_show", methods: ['GET'])]
     // El método que devuelve un ticket en particular por convención REST es show().
-    public function show(string $id) {
+    // El parámetro $id identifica la ruta del ticket particular
+    public function show(string $id, Request $request) {
 
         // Se inicializa la variable $ticket como null, que contendrá el ticket encontrado.    
         $ticket = null;
@@ -109,22 +111,43 @@ final class TicketController extends AbstractController
             return new Response($html, Response::HTTP_NOT_FOUND);
         }
 
-        $html = <<<HTML
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Ticket {$id}</title>
-            </head>
-            <body>
-                <h1>Ticket {$id}</h1>
-                <p>Title: {$ticket['title']}</p>
-                <p>Priority: {$ticket['priority']}</p>
-            </body>
-            </html>
-        HTML;
+        /* Voy a chequear si tengo parámetros en la petición / request (query)
+        Esto recupera el valor de view si existe en la URL:
+        http://localhost:8000/tickets/INC-1001?view=compact 
+        Si no existe, el asigna a $view el valor por defecto */
+        $view = $request->query->get('view', 'full');
 
+        if ($view === "compact") {
+            $html = <<<HTML
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Ticket {$id}</title>
+                </head>
+                <body>
+                    <h1>Ticket {$id}</h1>
+                </body>
+                </html>
+            HTML;
+        } else {
+            $html = <<<HTML
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Ticket {$id}</title>
+                </head>
+                <body>
+                    <h1>Ticket {$id}</h1>
+                    <p>Title: {$ticket['title']}</p>
+                    <p>Priority: {$ticket['priority']}</p>
+                </body>
+                </html>
+            HTML;
+        }
         return new Response($html, Response::HTTP_OK);
     }
 }
