@@ -1,0 +1,21 @@
+{#  Esta plantilla hereda de base.html.twig #}
+{% extends "base.html.twig" %}
+
+{# 
+    Sobreescribimos el título de la página, usamos la variable projectName, el
+    cual vendrá desde el controlador
+#}
+{% block title %}{{ projectName }}{% endblock %}
+
+{# Inserto el cuerpo de la página de inicio #}
+{% block body %}
+    <section class="hero">
+        <p class="eyebrow">IFCT092PO . Proyecto del curso</p>
+        {# projectName debe venir desde el controlador #}
+        <h1>{{ projectName }}</h1>
+        {# message debe venir desde el controlador #}
+        <p>{{ message }}</p>
+        {#  Generamos el enlace a incidencias usando el nombre Symfony de la ruta #}
+        <p><a href="{{ path('app_ticket_index') }}">Ver incidencias</a></p>
+    </section>
+{% endblock %}
