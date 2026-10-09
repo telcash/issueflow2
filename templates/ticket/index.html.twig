@@ -1,0 +1,37 @@
+{#  Esta plantilla hereda de base.html.twig #}
+{% extends "base.html.twig" %}
+
+{# 
+    Sobreescribimos el título de la página en la plantilla base, usamos la variable title, el
+    cual vendrá desde el controlador
+#}
+{% block title %}{{ title }}{% endblock %}
+
+{# Inserto el cuerpo de la página de /tickets: el listado de todos los tickets #}
+{% block body %}
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">IssueFlow</p>
+            <h1>{{ title }}</h1>
+        </div>
+
+        {# 
+            El array tickets será suministrado por el controlador
+            El filtro |length obtiene el número de elementos del array tickets
+        #}
+        <p class="counter">{{ tickets|length }} incidencias</p>
+    </div>
+    <div class="ticket-list">
+        {#  Recorremos la colección que el controlador envió a la plantilla #}
+        {% for ticket in tickets %}
+            {# 
+                Aquí muestro la información para cada uno de los tickets.
+                Esta información se mostrará en un diseño típico de card
+            #}
+            {% include 'ticket/_ticket_card.html.twig' with { ticket: ticket } only %}
+        {% else %}
+            {# Twig ejecuta este bloque si la colección está vacía #}
+            <p>No hay incidencias disponibles</p>
+        {% endfor %}
+    </div>
+{% endblock %}

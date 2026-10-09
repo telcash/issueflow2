@@ -1,0 +1,20 @@
+{#
+    Fragmento reutilizable, para representar una incidencia en particular.
+    Para los fragmentos se usa por convención un _ al inicio del nombre.
+    Un fragmento es una parte de una página, no una página completa
+#}
+<article class="ticket-card">
+    <div>
+        <p class="ticket-id">{{ ticket.id }}</p>
+        <h2>{{ ticket.title }}</h2>
+        <p>Prioridad: <strong>{{ ticket.priority }}</strong></p>
+    </div>
+
+    {#
+        Creamos un enlace para navegar a la página de un ticket en
+        particular, ruta /tickets/{id}
+        app_ticket_show necesita un parámetro {id} uq e se lo enviamos
+        en el segundo argumento de path()
+    #}
+    <a href="{{ path('app_ticket_show', { id: ticket.id }) }}">Ver detalle</a>
+</article>
