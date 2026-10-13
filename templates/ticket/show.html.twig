@@ -1,0 +1,22 @@
+{# Vista de detalle de una incidencia concreta. #}
+{% extends 'base.html.twig' %}
+
+{# Usamos el ID del ticket para construir un título de página específico. #}
+{% block title %}{{ ticket.id }} · IssueFlow{% endblock %}
+
+{% block body %}
+    <p>
+        {# No escribimos /tickets manualmente: usamos el nombre de la ruta. #}
+        <a href="{{ path('app_ticket_index') }}">← Volver a incidencias</a>
+    </p>
+
+    <article class="ticket-detail">
+        {#
+            Twig accede a las claves del array con la notación ticket.id,
+            ticket.title y ticket.priority.
+        #}
+        <p class="ticket-id">{{ ticket.id }}</p>
+        <h1>{{ ticket.title }}</h1>
+        <p>Prioridad: <strong>{{ ticket.priority }}</strong></p>
+    </article>
+{% endblock %}
