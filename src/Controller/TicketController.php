@@ -40,10 +40,10 @@ final class TicketController extends AbstractController
     // El parámetro $id identifica la ruta del ticket particular
     public function show(string $id) {
 
-        /* La función array_find busca el $ticket en el arreglo TICKETS */
+        /* La función array_find (PHP 8.4+) busca el $ticket en el arreglo TICKETS */
         $ticket = array_find(
             self::TICKETS,
-            fn (array $ticket): bool => $ticket['id'] === $id
+            fn (array $ticket): bool => $ticket['id'] === $id // Función flecha
         );
 
         if ($ticket === null) {
