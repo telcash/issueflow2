@@ -26,6 +26,7 @@ final class Ticket {
         private string $id,
         private string $title,
         private string $priority,
+        private string $status
     ) {    
     }
 
@@ -42,10 +43,20 @@ final class Ticket {
         return $this->priority;
     }
 
+    public function getStatus(): string {
+        return $this->status;
+    }
+
     /* Crear un método llamado isUrgent() que retorne
     true si la prioridad es 'urgent', o false en caso contrario */
-    public function isUrgent (){
+    public function isUrgent(): bool {
         return $this->priority === 'urgent';
+    }
+
+    /*Crear un método llamado isOpen() que retorne true
+    si el status es 'open', o false en caso contrario */
+    public function isOpen(): bool {
+        return $this->status === 'open'; 
     }
 
     /* Este método crea temporalmente los tickets en memoria (Esto
@@ -61,16 +72,19 @@ final class Ticket {
                 id: 'INC-1001',
                 title: 'No puedo iniciar sesión',
                 priority: 'urgent',
+                status: 'open'
             ),
             new Ticket(
                 id: 'INC-1002',
                 title: 'Error en la factura',
                 priority: 'high',
+                status: 'in_progress'
             ),
             new Ticket(
                 id: 'INC-1003',
                 title: 'Actualizar datos de contacto',
                 priority: 'normal',
+                status: 'closed'
             ),
         ];
     }

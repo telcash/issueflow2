@@ -31,7 +31,7 @@ final class TicketController extends AbstractController
         /* La función array_find (PHP 8.4+) busca el $ticket en el arreglo TICKETS */
         $ticket = array_find(
             Ticket::getAllTickets(),
-            fn (array $ticket): bool => $ticket['id'] === $id // Función flecha
+            fn (Ticket $ticket): bool => $ticket->getId() === $id // Función flecha
         );
 
         if ($ticket === null) {

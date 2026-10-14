@@ -18,5 +18,21 @@
         <p class="ticket-id">{{ ticket.id }}</p>
         <h1>{{ ticket.title }}</h1>
         <p>Prioridad: <strong>{{ ticket.priority }}</strong></p>
+        <p>Estado: <strong>{{ ticket.status }}</strong></p>
+
+        {# 
+            Quiero mostrar un mensaje solo sí priority es 'urgent'.
+            ticket.urgent resuelve el metodo isUrgent()
+        #}
+        {% if ticket.urgent %}
+            <p><strong>Requiere atención inmediata</strong></p>
+        {% endif %}
+        {# 
+            Quiero mostrar un mensaje solo sí el estado es
+            diferente de 'open'
+        #}
+        {% if not ticket.open %}
+            <p><strong>Esta incidencia ya está siendo gestionada o está cerrada</strong></p>
+        {% endif %}
     </article>
 {% endblock %}
