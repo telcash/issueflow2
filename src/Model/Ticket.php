@@ -26,7 +26,7 @@ final class Ticket {
         private string $id,
         private string $title,
         private TicketPriority $priority,
-        private string $status
+        private TicketStatus $status
     ) {    
     }
 
@@ -43,21 +43,22 @@ final class Ticket {
         return $this->priority;
     }
 
-    public function getStatus(): string {
+    public function getStatus(): TicketStatus {
         return $this->status;
     }
 
     /* Crear un método llamado isUrgent() que invoca a través
-    del atributo priority al método isUrgent() de TicketPriority el
+    del atributo priority al método isUrgent() de TicketPriority, el
     cual retorna true si la prioridad es 'urgent', o false en caso contrario */
     public function isUrgent(): bool {
-        return ($this->priority->isUrgent());
+        return $this->priority->isUrgent();
     }
 
-    /*Crear un método llamado isOpen() que retorne true
-    si el status es 'open', o false en caso contrario */
+    /* Crear un método llamado isOpen() que invoca a través
+    del atributo status al método isOpen() de TicketStatus, el
+    cual retorna true si la prioridad es 'open', o false en caso contrario */
     public function isOpen(): bool {
-        return $this->status === 'open'; 
+        return $this->status->isOpen(); 
     }
 
     /* Este método crea temporalmente los tickets en memoria (Esto
@@ -73,19 +74,19 @@ final class Ticket {
                 id: 'INC-1001',
                 title: 'No puedo iniciar sesión',
                 priority: TicketPriority::Urgent,
-                status: 'open'
+                status: TicketStatus::Open
             ),
             new Ticket(
                 id: 'INC-1002',
                 title: 'Error en la factura',
                 priority: TicketPriority::High,
-                status: 'in_progress'
+                status: TicketStatus::InProgress
             ),
             new Ticket(
                 id: 'INC-1003',
                 title: 'Actualizar datos de contacto',
                 priority: TicketPriority::Normal,
-                status: 'closed'
+                status: TicketStatus::Closed
             ), 
         ];
     }
