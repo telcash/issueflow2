@@ -60,34 +60,4 @@ final class Ticket {
     public function isOpen(): bool {
         return $this->status->isOpen(); 
     }
-
-    /* Este método crea temporalmente los tickets en memoria (Esto
-    es una data de prueba). (Antes usábamos
-    una constante de clase) Más adelante este trabajo lo hará una capa de
-    persistencia/Repository conectado a Doctrine y MySQL 
-    Un método estático puede ser llamado directamente desde la clase sin
-    haber instanciado un objeto: Ticket::getAllTickets()
-    */
-    public static function getAllTickets(): array {
-        return [
-            new Ticket(
-                id: 'INC-1001',
-                title: 'No puedo iniciar sesión',
-                priority: TicketPriority::Urgent,
-                status: TicketStatus::Open
-            ),
-            new Ticket(
-                id: 'INC-1002',
-                title: 'Error en la factura',
-                priority: TicketPriority::High,
-                status: TicketStatus::InProgress
-            ),
-            new Ticket(
-                id: 'INC-1003',
-                title: 'Actualizar datos de contacto',
-                priority: TicketPriority::Normal,
-                status: TicketStatus::Closed
-            ), 
-        ];
-    }
 }

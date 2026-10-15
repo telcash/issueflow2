@@ -3,22 +3,26 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use App\Model\Ticket;
+use App\Service\TicketCatalog;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 // Mi clase TicketController hereda de AbstractController de Symfony
 final class TicketController extends AbstractController
 {
+    /* Inyección de dependencias */
+    public function __construct(
+        private readonly TicketCatalog $ticketCatalog,
+    ) {}
+
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
     // El método que devuelve la lista de tickets por convención REST es index().
     public function index(): Response {
         return $this->render('ticket/index.html.twig', [
             // Las claves del arreglo se convierten en las variables que espera Twig
             'title' => 'Incidencias',
-            'tickets' => Ticket::getAllTickets()
+            'tickets' => $this->ticketCatalog->all()
         ]);
     }
 
@@ -29,10 +33,7 @@ final class TicketController extends AbstractController
     public function show(string $id) {
 
         /* La función array_find (PHP 8.4+) busca el $ticket en el arreglo TICKETS */
-        $ticket = array_find(
-            Ticket::getAllTickets(),
-            fn (Ticket $ticket): bool => $ticket->getId() === $id // Función flecha
-        );
+        $ticket = $this->ticketCatalog->find($id);
 
         if ($ticket === null) {
             throw $this->createNotFoundException(
