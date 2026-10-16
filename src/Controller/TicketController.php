@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use App\Service\TicketCatalog;
+use App\Service\TicketSlaCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +15,7 @@ final class TicketController extends AbstractController
     /* Inyección de dependencias */
     public function __construct(
         private readonly TicketCatalog $ticketCatalog,
+        private readonly TicketSlaCalculator $ticketSlaCalculator,
     ) {}
 
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
@@ -46,7 +48,8 @@ final class TicketController extends AbstractController
         /* Envío a la plantilla correspondiente los datos
         del ticket encontrado: $ticket */
         return $this->render('ticket/show.html.twig', [
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'responseTargetHours' => $this->ticketSlaCalculator->getResponseTargetHours($ticket)
         ]);
     }
 }
