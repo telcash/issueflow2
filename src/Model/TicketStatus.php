@@ -13,6 +13,14 @@ enum TicketStatus: string
     case InProgress = 'in_progress';
     case Closed = 'closed';
 
+    public function getLabel(): string
+    {
+        return match($this) {
+            self::Open => 'Abierto',
+            self::InProgress => 'En progreso',
+            self::Closed => 'Cerrado'
+        };
+    }
     /* $this será el status que se quiere comparar,
     en este caso contra el valor constante del enum
     self::Open */
