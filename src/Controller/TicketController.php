@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use App\Service\TicketCatalog;
+use App\Contract\TicketCatalogInterface;
 use App\Service\TicketSlaCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ final class TicketController extends AbstractController
 {
     /* Inyección de dependencias */
     public function __construct(
-        private readonly TicketCatalog $ticketCatalog,
+        private readonly TicketCatalogInterface $ticketCatalog,
         private readonly TicketSlaCalculator $ticketSlaCalculator,
     ) {}
 
