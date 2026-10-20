@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Error 500 | Error interno del servidor
+{% endblock %}
+
+{% block body %}
+<div class="error-container">
+    <h1 class="error-code">500</h1>
+
+    <h2 class="error-title">
+        Error interno del servidor
+    </h2>
+
+    <p class="error-message">
+        ¡Vaya! Algo ha salido mal en nuestro servidor.
+        Estamos experimentando un problema técnico
+        y no podemos procesar tu solicitud en este momento.
+    </p>
+
+    <p class="error-message">
+        Por favor, inténtalo de nuevo más tarde.
+        Disculpa las molestias.
+    </p>
+
+    <a href="{{ path('app_home') }}"
+       class="error-button">
+        Volver al inicio
+    </a>
+</div>
+{% endblock %}

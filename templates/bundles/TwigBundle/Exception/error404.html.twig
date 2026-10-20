@@ -1,0 +1,8 @@
+{# Extiende la plantilla base #}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>No encontramos la página solicitada</h1>
+    <p>La dirección puede ser incorrecta o el recurso ya no estar disponible.</p>
+    <a href="{{ path('app_ticket_index') }}">Volver a incidencias</a>
+{% endblock %}
