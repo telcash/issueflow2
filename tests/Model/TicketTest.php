@@ -8,6 +8,7 @@ use App\Model\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -36,12 +37,31 @@ final class TicketTest extends TestCase
         self::assertSame('Mi ordenador no enciende', $ticket->getTitle());
      }
 
+     /* Cambiar este test para que mediante el uso de un data provider,
+     se prueben distintos id's inválidos:
+     'Ticket0001'
+     'INC-101'
+     'INC-12345'
+     'INC_1001'
+     'inc-2345'
+     ''
+     */
+    public static function idProvider(): iterable
+    {
+        yield 'non_inc_prefix' => ['Ticket0001'];
+        yield 'too_few_digits' => ['INC-101'];
+        yield 'too_many_digits' => ['INC-12345'];
+        yield 'wrong_separator' => ['INC_1001'];
+        yield 'lowercase_prefix' => ['inc-2345'];
+        yield 'empty_string' => [''];
+    }
      #[Test]
-     public function it_rejects_an_invalid_identifier(): void
+     #[DataProvider('idProvider')]
+     public function it_rejects_an_invalid_identifier(string $id): void
      {
         $this->expectException(InvalidArgumentException::class);
         new Ticket(
-            id: 'Ticket0001',
+            id: $id,
             title: 'Incidencia válida',
             priority: TicketPriority::Low,
             status: TicketStatus::InProgress
