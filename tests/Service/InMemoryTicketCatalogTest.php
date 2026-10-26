@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Model\Ticket;
+use App\Entity\Ticket;
 use App\Service\InMemoryTicketCatalog;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -15,17 +15,17 @@ final class InMemoryTicketCatalogTest extends TestCase
     public function it_finds_an_existing_ticket(): void
     {
         $catalog = new InMemoryTicketCatalog();
-        $ticket = $catalog->find('INC-1001');
+        $ticket = $catalog->findByCode('INC-1001');
 
         self::assertInstanceOf(Ticket::class, $ticket);
-        self::assertSame('INC-1001', $ticket->getId());
+        self::assertSame('INC-1001', $ticket->getCode());
     }
 
     #[Test]
     public function it_returns_null_when_the_ticket_does_not_exist(): void
     {
         $catalog = new InMemoryTicketCatalog();
-        $ticket = $catalog->find('INC-1234');
+        $ticket = $catalog->findByCode('INC-1234');
 
         self::assertNull($ticket);
     }

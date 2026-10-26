@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Model;
 
-use App\Model\Ticket;
+use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 use InvalidArgumentException;
@@ -25,7 +25,7 @@ final class TicketTest extends TestCase
      public function it_normalizes_the_title_when_the_ticket_is_created(): void
      {
         $ticket = new Ticket(
-            id: 'INC-1001',
+            code: 'INC-1001',
             title: '            Mi ordenador no enciende          ',
             priority: TicketPriority::Urgent,
             status: TicketStatus::Open
@@ -57,11 +57,11 @@ final class TicketTest extends TestCase
     }
      #[Test]
      #[DataProvider('idProvider')]
-     public function it_rejects_an_invalid_identifier(string $id): void
+     public function it_rejects_an_invalid_identifier(string $code): void
      {
         $this->expectException(InvalidArgumentException::class);
         new Ticket(
-            id: $id,
+            code: $code,
             title: 'Incidencia válida',
             priority: TicketPriority::Low,
             status: TicketStatus::InProgress
@@ -73,7 +73,7 @@ final class TicketTest extends TestCase
      {
         $this->expectException(InvalidArgumentException::class);
         new Ticket(
-            id: 'INC-0001',
+            code: 'INC-0001',
             title: '',
             priority: TicketPriority::Low,
             status: TicketStatus::InProgress
@@ -84,7 +84,7 @@ final class TicketTest extends TestCase
      public function it_reports_when_a_ticket_is_urgent(): void
      {
         $ticket = new Ticket(
-            id: 'INC-1003',
+            code: 'INC-1003',
             title: 'Servidor no disponible',
             priority: TicketPriority::Urgent,
             status: TicketStatus::Open

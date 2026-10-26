@@ -5,7 +5,7 @@
 #}
 <article class="ticket-card">
     <div>
-        <p class="ticket-id">{{ ticket.id }}</p>
+        <p class="ticket-code">{{ ticket.code }}</p>
         <h2>{{ ticket.title }}</h2>
         <p>Prioridad: <strong>{{ ticket.priority.label }}</strong></p>
         <p>Estado: <strong>{{ ticket.status.label }}</strong></p>
@@ -13,9 +13,9 @@
 
     {#
         Creamos un enlace para navegar a la página de un ticket en
-        particular, ruta /tickets/{id}
-        app_ticket_show necesita un parámetro {id} uq e se lo enviamos
+        particular, ruta /tickets/{code}
+        app_ticket_show necesita un parámetro {code} uq e se lo enviamos
         en el segundo argumento de path()
     #}
-    <a href="{{ path('app_ticket_show', { id: ticket.id }) }}">Ver detalle</a>
+    <a href="{{ path('app_ticket_show', { code: ticket.code }) }}">Ver detalle</a>
 </article>

@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Usamos el ID del ticket para construir un título de página específico. #}
-{% block title %}{{ ticket.id }} · IssueFlow{% endblock %}
+{% block title %}{{ ticket.code }} · IssueFlow{% endblock %}
 
 {% block body %}
     <p>
@@ -15,7 +15,7 @@
             Twig accede a las claves del array con la notación ticket.id,
             ticket.title y ticket.priority.
         #}
-        <p class="ticket-id">{{ ticket.id }}</p>
+        <p class="ticket-code">{{ ticket.code }}</p>
         <h1>{{ ticket.title }}</h1>
         <p>Prioridad: <strong>{{ ticket.priority.label }}</strong></p>
         <p>Estado: <strong>{{ ticket.status.label }}</strong></p>
