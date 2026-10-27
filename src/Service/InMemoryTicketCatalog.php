@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use App\Contract\TicketCatalogInterface;
 use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 
-#[AsAlias(TicketCatalogInterface::class)]
 final class InMemoryTicketCatalog implements TicketCatalogInterface
 {
     private array $tickets;

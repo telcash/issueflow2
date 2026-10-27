@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use App\Contract\TicketCatalogInterface;
 use App\Entity\Ticket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -13,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Repository Doctrine de Ticket
  * Implementa TicketCatalogInterface
  */
+#[AsAlias(TicketCatalogInterface::class)]
 final class TicketRepository extends ServiceEntityRepository implements TicketCatalogInterface
 {
     public function __construct(ManagerRegistry $registry)
