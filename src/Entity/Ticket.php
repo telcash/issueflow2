@@ -32,6 +32,23 @@ final class Ticket {
     private ?int $id = null;
 
     /**
+     * Esta es una relación unidireccional. Ticket es el lado propietario
+     * porque la FK user_id vive en la tabla tickets.
+     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?User $assignee = null;
+
+    /**
+     * Esta es una relación bidireccional. Ticket es el lado propietario
+     * porque la FK category_id vive en la tabla tickets.
+     * Category::$tickets es el lado inverso y usa mappedBy="category"
+     */
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Category $category = null;
+
+    /**
      * Constructor Property Promotion (PHP moderno).
      *
      * Al escribir "private string $code" dentro del constructor, PHP hace dos
@@ -87,6 +104,32 @@ final class Ticket {
     public function getStatus(): TicketStatus {
         return $this->status;
     }
+
+    public function getAssignee(): ?User {
+        return $this->assignee;
+    }
+
+    public function getCategory(): ?Category {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function assignTo(?User $assignee): void
+    {
+        $this->assignee = $assignee;
+    }
+
+    /*
+    public function metodoParaResponderPreguntasSergiNoelia(): void {
+        $nombreUsuario = $this->getUser()->getName();
+        $emailTecnicoAsignado = $this->getUser()->getEmail();
+        $categoryName = $this->getCategory()->getName();
+    }
+    */
 
     /* Crear un método llamado isUrgent() que invoca a través
     del atributo priority al método isUrgent() de TicketPriority, el
