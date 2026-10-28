@@ -9,6 +9,22 @@
         <h2>{{ ticket.title }}</h2>
         <p>Prioridad: <strong>{{ ticket.priority.label }}</strong></p>
         <p>Estado: <strong>{{ ticket.status.label }}</strong></p>
+        <p>
+            Categoría:
+            {% if ticket.category %}
+                {{ ticket.category.name }}
+            {% else %}
+                Sin categoría
+            {% endif %}
+        </p>
+        <p>
+            Asignado a:
+            {% if ticket.assignee %}
+                {{ ticket.assignee.name }}
+            {% else %}
+                Sin asignar
+            {% endif %}
+        </p>        
     </div>
 
     {#
