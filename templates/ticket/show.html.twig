@@ -5,6 +5,18 @@
 {% block title %}{{ ticket.code }} · IssueFlow{% endblock %}
 
 {% block body %}
+    {#
+        app.flashes('success') lee los mensajes de ese tipo y los consume.
+        hasPreviousSession evita iniciar una nueva sesión solo por preguntar
+        si existen flashes 
+    #}
+    {% if app.request.hasPreviousSession %}
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <p>
         {# No escribimos /tickets manualmente: usamos el nombre de la ruta. #}
         <a href="{{ path('app_ticket_index') }}">← Volver a incidencias</a>

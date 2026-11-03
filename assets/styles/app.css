@@ -334,6 +334,15 @@ input[type="submit"]:focus-visible {
     text-decoration: none;
 }
 
+.flash-success {
+    background: #d1fae5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    padding: .75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
 /* Ajuste sencillo para pantallas pequeñas. */
 @media (max-width: 640px) {
 

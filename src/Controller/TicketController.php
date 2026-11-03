@@ -80,6 +80,15 @@ final class TicketController extends AbstractController
             $this->entityManager->persist($ticket);
             $this->entityManager->flush();
 
+            /**
+             * Un Flash Message vive en la sesión y está pensado para consumirse una sola vez.
+             * Lo podemos usar para confirmar una creación de una incidencia después del redirect
+             */
+            $this->addFlash(
+                'success',
+                sprintf('Incidencia %s creada correctamente', $ticket->getCode())
+            );
+
             // Luego de guardar el ticket, redirigimos a la página de detalle de ticket
             return $this->redirectToRoute('app_ticket_show', [
                 'code' => $ticket->getCode()
