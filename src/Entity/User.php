@@ -8,6 +8,8 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Usuario mínimo para asignar incidencias (técnico)
@@ -15,7 +17,7 @@ use InvalidArgumentException;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'users')]
-final class User
+final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * Identificador técnico de base de datos.
@@ -27,6 +29,9 @@ final class User
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::BIGINT, options: ['unsigned' => true])]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
 
     public function __construct(
         #[ORM\Column(length: 120)]
@@ -74,5 +79,31 @@ final class User
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Implementaciones de los métodos de las interfaces
+     */
+
+    // Método que devuelve el identificador público
+    public function getUserIdentifier(): string
+    {
+        return $this->email;  
+    }
+
+    // Método que devuelve el listado de roles de un usuario
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $hashedPassword): void
+    {
+        $this->password = $hashedPassword;
     }
 }

@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Comandos de apoyo para los datos de demostración de IssueFlow.
@@ -26,6 +27,7 @@ final class TicketCommands
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TicketRepository $ticketRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
@@ -81,6 +83,12 @@ final class TicketCommands
         if ($ana === null) {
             $ana = new User('Ana Soporte', 'ana@issueflow.local');
             $this->entityManager->persist($ana);
+        }
+
+        if ($ana->getPassword() === null) {
+            $ana->setPassword(
+                $this->passwordHasher->hashPassword($ana, 'IssueFlow123!')
+            );
         }
 
         // Un flush intermedio hace que las Entities nuevas queden gestionadas y
