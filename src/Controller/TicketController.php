@@ -44,58 +44,38 @@ final class TicketController extends AbstractController
      * POST: Recibe el formulario cuando se envíe con sus valores,
      * estos se procesan y se persisten en la base de datos si son correctos.
      * Los datos del formulario vienen en el objeto Request
+     * Los errores de validación vuelven al formulario asociados al campo que incumplió la restricción
      */
     #[Route('/tickets/new', name: 'app_ticket_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        // Crear un objeto TicketCreateData para recibir la información del formulario
+        // Crear un objeto TicketCreateData (DTO) para recibir la información del formulario
         $data = new TicketCreateData();
-
-        /*
-            Creamos un formulario con el método createForm() heredado de AbstractController
-            1er parámetro corresponde a la clase que define el formulario
-            2do parámetro corresponde a el objeto (DTO) que recibe la información del formulario
-        */
+        /**
+         * Inicializamos un objeto form con el método createForm() heredado de AbstractController
+         * 1er parámetro corresponde a la clase que define el formulario
+         * 2do parámetro corresponde a el objeto (DTO) que recibe la información del formulario
+         */
         $form = $this->createForm(TicketType::class, $data);
 
-        /*
-            handleRequest() hace lo siguiente:
-            - Detectar el envío del formulario
-            - Extraer los datos correspondientes del request
-            - Transformar los valores al tipo esperado
-            - Asigna los datos al objeto TicketCreateData
-        */
+        /**
+         * El método handleRequest() hace lo siguiente:
+         * 1- Detecta el envío del formulario (si ha sido enviado o no)
+         * 2- Extrae los datos correspondientes del Request
+         * 3- Transforma los valores al tipo esperado
+         * 4- Asigna los datos al objeto TicketCreateData
+         */
         $form->handleRequest($request);
 
-        /* 
-            Chequeo si el estado del formulario es enviado y además si el formulario es válido.
-            isValid() puede ejecutar las reglas de validación definidas en el DTO TicketCreateData
+        /**
+         * Chequeo si el estado del formulario es enviado y además si el formulario es válido.
+         * isValid() puede ejecutar las reglas de validación definidas en el DTO TicketCreateData
         */
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                // Construimos la entidad ticket con los datos ya validados del DTO
-                $ticket = new Ticket(
-                    code: $data->code,
-                    title: $data->title,
-                    priority: $data->priority,
-                    status: $data->status
-                );
-                // Las relaciones son opcionales y se asignan mediante la API de Ticket
-                $ticket->setCategory($data->category);
-                $ticket->assignTo($data->assignee);
-            } catch (InvalidArgumentException $exception) {
-                /*
-                    Si hay un error lo agregamos al formulario, y volvemos a cargar
-                    la plantilla del formulario
-                */
-                $form->addError(
-                    new FormError($exception->getMessage())
-                );
-                return $this->render('ticket/new.html.twig', [
-                    'form' => $form,
-                ]);
-            }
-            // Solo llegamos aquí si el Ticket se construyó correctamente
+            // Si llegamos aquí, ya la entrada del formulario fue validada
+            // Creo la instancia Ticket a partir del DTO TicketCreateData
+            $ticket = $data->mapToTicket();
+
             // Usamos el entityManager para persistir el ticket en la base de datos
             $this->entityManager->persist($ticket);
             $this->entityManager->flush();
@@ -105,7 +85,8 @@ final class TicketController extends AbstractController
                 'code' => $ticket->getCode()
             ]);
         }
-        // Si el formulario no fue enviado o no es válido, es un GET, mostramos el formulario
+        // Si llegamos aquí el formulario no fue enviado, o fue enviado pero no es válido
+        // Envío como respuesta la plantilla del formulario
         return $this->render('ticket/new.html.twig', [
             'form' => $form,
         ]);

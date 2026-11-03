@@ -3,25 +3,30 @@
 {% block title %}Nueva incidencia · IssueFlow{% endblock %}
 
 {% block body %}
-    <p><a href="{{ path('app_ticket_index') }}">← Volver a incidencias</a></p>
-
-    <h1>Nueva incidencia</h1>
+    <p><a href="{{ path('app_ticket_index') }}">Volver a incidencias</a></p>
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Gestión de incidencias</p>
+            <h1>Nueva incidencia</h1>
+        </div>
+    </div>
     <p>Completa los datos para registrar un ticket en IssueFlow.</p>
+    <div class="form-card">
+        {{ form_start(form) }}
+            {# Los errores globales, como la excepción temporal del dominio, aparecen aquí. #}
+            {{ form_errors(form) }}
 
+            {{ form_row(form.code) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.priority) }}
+            {{ form_row(form.status) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.assignee) }}
+            {{ form_row(form.save) }}
+
+            {# Renderiza campos ocultos que falten, incluido el token CSRF. #}
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
     {# form_start abre <form> y configura method/action automáticamente. #}
-    {{ form_start(form) }}
-        {# Los errores globales, como la excepción temporal del dominio, aparecen aquí. #}
-        {{ form_errors(form) }}
-
-        {{ form_row(form.code) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.priority) }}
-        {{ form_row(form.status) }}
-        {{ form_row(form.category) }}
-        {{ form_row(form.assignee) }}
-        {{ form_row(form.save) }}
-
-        {# Renderiza campos ocultos que falten, incluido el token CSRF. #}
-        {{ form_rest(form) }}
-    {{ form_end(form) }}
 {% endblock %}

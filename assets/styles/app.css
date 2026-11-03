@@ -67,7 +67,8 @@ main {
 /* Componentes visuales reutilizados en home y tickets. */
 .hero,
 .ticket-card,
-.ticket-detail {
+.ticket-detail,
+.form-card {
     background: white;
     border: 1px solid #d8e1e8;
     border-radius: 12px;
@@ -114,6 +115,11 @@ main {
 
 .ticket-card p {
     margin: .25rem 0;
+}
+
+.form-card {
+    max-width: 600px;
+    margin-top: 1rem;
 }
 
 .counter {
@@ -173,6 +179,160 @@ main {
     color: white;
 }
 
+/* Estilos para formularios */
+.form-card {
+    max-width: 600px;
+    margin-top: 1rem;
+}
+.form-description {
+    color: var(--text-muted, #64748b);
+    margin: 0 0 1.25rem;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+/* Filas y campos del formulario */
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+/* Etiquetas */
+form label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #334155;
+    display: block;
+}
+form label.required::after {
+    content: " *";
+    color: var(--danger-color, #dc2626);
+}
+
+/* Campos de entrada, selectores y áreas de texto */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form select,
+form textarea {
+    width: 100%;
+    padding: .65rem .85rem;
+    font-family: inherit;
+    font-size: .95rem;
+    color: #1f2937;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="number"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--primary-color, #0f766e);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+}
+
+form input[type="text"]::placeholder,
+form textarea::placeholder {
+    color: #94a3b8;
+}
+form select {
+    cursor: pointer;
+}
+/* Lista de errores de validación en campos */
+form ul {
+    list-style: none;
+    padding: 0;
+    margin: .25rem 0 0;
+    color: var(--danger-color, #dc2626);
+    font-size: .85rem;
+    font-weight: 500;
+}
+form ul li {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+}
+/* Errores globales del formulario */
+form > ul {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    color: #991b1b;
+}
+
+/* Espaciado para el botón de envío */
+form > div:has(button[type="submit"]),
+form > div:has(input[type="submit"]) {
+    margin-top: .5rem;
+}
+
+.button,
+button,
+input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color, #0f766e);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 600;
+    padding: .65rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+    background: var(--primary-hover, #115e59);
+    color: #ffffff;
+    text-decoration: none;
+}
+.button:active,
+button:active,
+input[type="submit"]:active {
+    background: var(--primary-active, #134e4a);
+    transform: translateY(1px);
+}
+.button:focus-visible,
+button:focus-visible,
+input[type="submit"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3);
+}
+/* Variantes de botones */
+.button-outline {
+    background: transparent;
+    color: var(--primary-color, #0f766e);
+    border: 1px solid var(--primary-color, #0f766e);
+}
+.button-outline:hover {
+    background: var(--primary-color, #0f766e);
+    color: #ffffff;
+    text-decoration: none;
+}
+.button-secondary {
+    background: #17324d;
+    color: #ffffff;
+}
+.button-secondary:hover {
+    background: #0e2032;
+    color: #ffffff;
+    text-decoration: none;
+}
 
 /* Ajuste sencillo para pantallas pequeñas. */
 @media (max-width: 640px) {

@@ -68,7 +68,7 @@ final class Ticket {
         #[ORM\Column(length: 20,enumType: TicketStatus::class)]
         private TicketStatus $status = TicketStatus::Open
     ) {
-        /* Verificamos la forma del id comparando con una regex (expresiones regulare) */
+        /* Verificamos la forma del id comparando con una regex (expresiones regulares) */
         if (preg_match('/^INC-\d{4}$/', $this->code) !== 1) {
             throw new InvalidArgumentException('El formato del código del ticket no es válido');
         }
