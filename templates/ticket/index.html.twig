@@ -21,6 +21,14 @@
         #}
         <p class="counter">{{ tickets|length }} incidencias</p>
     </div>
+    {% if lastTicketCode %}
+        <p>
+            Última incidencia consultada:
+            <a href="{{ path('app_ticket_show', {code: lastTicketCode}) }}">
+                {{ lastTicketCode }}
+            </a>
+        </p>
+    {% endif %}
     <div class="ticket-list">
         {#  Recorremos la colección que el controlador envió a la plantilla #}
         {% for ticket in tickets %}

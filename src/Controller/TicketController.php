@@ -31,11 +31,21 @@ final class TicketController extends AbstractController
 
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
     // El método que devuelve la lista de tickets por convención REST es index().
-    public function index(): Response {
+    public function index(Request $request): Response {
+        $lastTicketCode = null;
+
+        /**
+         * Si existe una sesión recuperamos el valor de last_ticket_code
+         */
+        if ($request->hasPreviousSession()) {
+            $lastTicketCode = $request->getSession()->get('last_ticket_code');
+        }
+
         return $this->render('ticket/index.html.twig', [
             // Las claves del arreglo se convierten en las variables que espera Twig
             'title' => 'Incidencias',
-            'tickets' => $this->ticketCatalog->all()
+            'tickets' => $this->ticketCatalog->all(),
+            'lastTicketCode' => $lastTicketCode
         ]);
     }
 
@@ -105,7 +115,7 @@ final class TicketController extends AbstractController
     #[Route('/tickets/{code}', name:"app_ticket_show", methods: ['GET'])]
     // El método que devuelve un ticket en particular por convención REST es show().
     // El parámetro $code identifica la ruta del ticket particular
-    public function show(string $code): Response {
+    public function show(string $code, Request $request): Response {
 
         /* La función array_find (PHP 8.4+) busca el $ticket en el arreglo TICKETS */
         $ticket = $this->ticketCatalog->findByCode($code);
@@ -126,6 +136,13 @@ final class TicketController extends AbstractController
         }
         /* Si llego a está linea es porque no se lanzó el error, por lo
         tanto, el $ticket no es NULL */
+
+        /**
+         * Guardamos en la sesión la información del último ticket visitado.
+         * Esto luego lo podemos mostrar en otra página, por ejemplo, en el listado
+         * de los tickets
+         */
+        $request->getSession()->set('last_ticket_code', $ticket->getCode());
 
         /* Envío a la plantilla correspondiente los datos
         del ticket encontrado: $ticket */
