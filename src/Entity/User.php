@@ -82,7 +82,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Implementaciones de los métodos de las interfaces
+     * Implementaciones de los métodos de las interfaces de seguridad
      */
 
     // Método que devuelve el identificador público

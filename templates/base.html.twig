@@ -42,6 +42,16 @@
                     <a href="{{ path('app_home') }}">Inicio</a>
                     <a href="{{ path('app_ticket_index') }}">Incidencias</a>
                     <a href="{{ path('app_health') }}">Estado</a>
+                    {#
+                        Si hay un usuario autenticado mostramos el enlace a logout,
+                        sino mostramos el enlace a login 
+                    #}
+                    {% if app.user %}
+                        <span>Hola, {{ app.user.name }}</span>
+                        <a href="{{ path('_logout_main') }}" data-turbo-prefetch="false">Cerrar sesión</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}">Iniciar sesión</a>
+                    {% endif %}
                 </nav>
             </div>
         </header>
