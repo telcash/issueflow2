@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Ticket;
 use App\Contract\TicketCatalogInterface;
 use App\Contract\TicketSlaCalculatorInterface;
 use Psr\Log\LoggerInterface;
@@ -14,9 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use InvalidArgumentException;
-use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 // Mi clase TicketController hereda de AbstractController de Symfony
 final class TicketController extends AbstractController
@@ -57,6 +55,11 @@ final class TicketController extends AbstractController
      * Los errores de validación vuelven al formulario asociados al campo que incumplió la restricción
      */
     #[Route('/tickets/new', name: 'app_ticket_new', methods: ['GET', 'POST'])]
+    // IsGranted solo permite acceso a la ruta al rol establecido
+    #[IsGranted(
+        'ROLE_AGENT',
+        message: 'Necesitas permisos de agente para crear incidencias.'
+    )]
     public function new(Request $request): Response
     {
         // Crear un objeto TicketCreateData (DTO) para recibir la información del formulario
