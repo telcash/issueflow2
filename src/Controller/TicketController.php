@@ -9,6 +9,8 @@ use App\Contract\TicketSlaCalculatorInterface;
 use Psr\Log\LoggerInterface;
 use App\Form\TicketType;
 use App\Form\Model\TicketCreateData;
+use App\Form\Model\TicketSearchCriteria;
+use App\Form\TicketFilterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,11 +41,23 @@ final class TicketController extends AbstractController
             $lastTicketCode = $request->getSession()->get('last_ticket_code');
         }
 
+        // Este objeto representa los criterios que llegan desde el formulario de filtrado
+        $criteria = new TicketSearchCriteria();
+
+        // Creamos el formulario de filtrado
+        $filterForm = $this->createForm(TicketFilterType::class, $criteria, [
+            'action' => $this->generateUrl('app_ticket_index')
+        ]);
+
+        // Procesar el formulario
+        $filterForm->handleRequest($request);
+
         return $this->render('ticket/index.html.twig', [
             // Las claves del arreglo se convierten en las variables que espera Twig
             'title' => 'Incidencias',
             'tickets' => $this->ticketCatalog->all(),
-            'lastTicketCode' => $lastTicketCode
+            'lastTicketCode' => $lastTicketCode,
+            'filterForm' => $filterForm
         ]);
     }
 

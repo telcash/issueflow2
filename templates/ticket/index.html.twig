@@ -25,6 +25,25 @@
         #}
         <p class="counter">{{ tickets|length }} incidencias</p>
     </div>
+    {#
+        Filtro para búsqueda de incidencias 
+    #}
+    <section class="filter-card">
+        {{ form_start(filterForm, { attr: { class: 'filter-form' } }) }}
+            {# Campos del formulario #}
+            {{ form_row(filterForm.query) }}
+            {{ form_row(filterForm.priority) }}
+            {{ form_row(filterForm.status) }}
+            {{ form_row(filterForm.category) }}
+
+            <div class="filter-actions">
+                {{ form_widget(filterForm.filter) }}
+                <a class="button button-outline" href="{{ path('app_ticket_index') }}">
+                    Limpiar
+                </a>
+            </div>
+        {{ form_end(filterForm) }}
+    </section>
     {% if lastTicketCode %}
         <p>
             Última incidencia consultada:
