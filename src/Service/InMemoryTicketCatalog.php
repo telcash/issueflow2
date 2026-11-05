@@ -9,7 +9,7 @@ use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 
-final class InMemoryTicketCatalog implements TicketCatalogInterface
+final class InMemoryTicketCatalog //implements TicketCatalogInterface
 {
     private array $tickets;
 

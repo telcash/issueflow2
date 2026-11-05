@@ -15,7 +15,7 @@ use App\Model\TicketStatus;
 final class TicketSearchCriteria
 {
     // Texto libre para buscar por código o título
-    public string $query = '';
+    public ?string $query = '';
 
     // Filtramos por prioridad
     public ?TicketPriority $priority = null;

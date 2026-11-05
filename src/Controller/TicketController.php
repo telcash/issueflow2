@@ -52,10 +52,18 @@ final class TicketController extends AbstractController
         // Procesar el formulario
         $filterForm->handleRequest($request);
 
+        $page = max(1, $request->query->getInt('page', 1));
+
+        $ticketPage = $this->ticketCatalog->search(
+            criteria: $criteria,
+            page: $page,
+            pageSize: 5
+        );
+
         return $this->render('ticket/index.html.twig', [
             // Las claves del arreglo se convierten en las variables que espera Twig
             'title' => 'Incidencias',
-            'tickets' => $this->ticketCatalog->all(),
+            'tickets' => $ticketPage,
             'lastTicketCode' => $lastTicketCode,
             'filterForm' => $filterForm
         ]);
