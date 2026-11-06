@@ -20,10 +20,10 @@
         {% endif %}
         
         {# 
-            El array tickets será suministrado por el controlador
-            El filtro |length obtiene el número de elementos del array tickets
+            ticketPage será suministrado por el controlador
+            getTotalCount me calcula la cantidad de tickets totales
         #}
-        <p class="counter">{{ tickets|length }} incidencias</p>
+        <p class="counter">{{ ticketPage.getTotalCount() }} incidencias</p>
     </div>
     {#
         Filtro para búsqueda de incidencias 
@@ -53,8 +53,8 @@
         </p>
     {% endif %}
     <div class="ticket-list">
-        {#  Recorremos la colección que el controlador envió a la plantilla #}
-        {% for ticket in tickets %}
+        {#  Recorremos la colección de tickets de la página dada por el paginador #}
+        {% for ticket in ticketPage.getItems() %}
             {# 
                 Aquí muestro la información para cada uno de los tickets.
                 Esta información se mostrará en un diseño típico de card
@@ -62,7 +62,47 @@
             {% include 'ticket/_ticket_card.html.twig' with { ticket: ticket } only %}
         {% else %}
             {# Twig ejecuta este bloque si la colección está vacía #}
-            <p>No hay incidencias disponibles</p>
+            <p>No hay incidencias que coincidan con los criterios de búsqueda</p>
         {% endfor %}
     </div>
+    {# Agregamos los controles de navegación del paginador #}
+    {# 
+        hasToPaginate verifica si hacen falta los controles de página, esto es, si los resultados
+        caben en un sola página no harían falta
+    #}
+    {% if ticketPage.hasToPaginate() %}
+        {# Guardo todos los parámetros actuales de la URL #}
+        {% set queryParameters = app.request.query.all %}
+
+        <nav class="pagination">
+            {# Mostramos el enlace a la página previa sólo si existe una página previa #}
+            {% if ticketPage.hasPreviousPage() %}
+                <a 
+                    class="button button-outline"
+                    href="{{ path(
+                        'app_ticket_index',
+                        queryParameters|merge({ page: ticketPage.getPageNumber() - 1 })
+                    ) }}"
+                >
+                    ← Anterior
+                </a>
+            {% endif %}
+            <span>
+                Página {{ ticketPage.getPageNumber() }} de {{ ticketPage.getPageCount() }}
+            </span>
+            {# Mostramos el enlace a la página siguiente sólo si existe una página siguiente #}
+            {% if ticketPage.hasNextPage() %}
+                <a 
+                    class="button button-outline"
+                    href="{{ path(
+                        'app_ticket_index',
+                        queryParameters|merge({ page: ticketPage.getPageNumber() + 1 })
+                    ) }}"
+                >
+                    Siguiente →
+                </a>
+            {% endif %}
+        </nav>
+    {% endif %}
+    
 {% endblock %}
