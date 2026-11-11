@@ -1,9 +1,6 @@
 # Imagen oficial de PHP 8.4 con Apache incluido
 FROM php:8.4-apache
 
-ENV APP_ENV=prod \
-    APP_DEBUG=0
-
 # Instalo los paquetes necesarios para mi app
 RUN apt-get update \
     && apt-get install -y \
