@@ -9,8 +9,11 @@ services:
     ports:
       - "8000:80" # 8000 es el puerto del ordenador host, y 80 el interno del contenedor
     
-    env_file:
-      - .env
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
     
     command:
       - sh
@@ -18,6 +21,7 @@ services:
       - >-
         php bin/console doctrine:migrations:migrate --no-interaction &&
         php bin/console app:tickets:seed --no-interaction &&
+        apache2-foreground
 
     depends_on:
       db:
@@ -28,8 +32,11 @@ services:
 
     container_name: issueflow_db
 
-    env_file:
-      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     
     ports:
       - "3307:3306"
