@@ -14,14 +14,6 @@ services:
       APP_DEBUG: 0
       APP_SECRET: mi_super_secreto
       DATABASE_URL: "mysql://issueflow:issueflow_pass@db:3306/issueflow?serverVersion=8.4.0&charset=utf8mb4"
-    
-    command:
-      - sh
-      - -c
-      - >-
-        php bin/console doctrine:migrations:migrate --no-interaction &&
-        php bin/console app:tickets:seed --no-interaction &&
-        apache2-foreground
 
     depends_on:
       db:
