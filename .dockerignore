@@ -1,0 +1,8 @@
+.git
+.env.local
+.env.*.local
+vendor
+var
+public/assets
+assets/vendor
+.DS_Store
